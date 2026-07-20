@@ -72,7 +72,7 @@
     /* Основная часть */
     .main-bg {
       min-height: 100vh;
-      padding-top: 56px;
+      padding-top: 18px;
       position: relative;
       background: #fff;
     }
@@ -85,7 +85,7 @@
       margin: 0 auto;
       border-radius: 16px;
       box-shadow: 0 2px 16px rgba(0,0,0,0.07);
-      padding: 62px 32px 62px 32px;
+      padding: 24px 32px 62px 32px;
       margin-bottom: 56px;
       text-align: center;
       display: flex;
@@ -210,7 +210,7 @@
     .outlined-text.small  { font-size: 18px !important; }
 
     @media (max-width: 700px) {
-      .content-section { max-width: 99vw; padding: 9vw 2vw 8vw 2vw; margin-bottom: 0; }
+      .content-section { max-width: 99vw; padding: 4vw 2vw 8vw 2vw; margin-bottom: 0; }
       .outlined-text.title   { font-size: 22px !important; }
       .outlined-text.section { font-size: 19px !important; }
       .outlined-text.address { font-size: 15px !important; }
@@ -441,17 +441,32 @@
     const playIcon = document.getElementById('playIcon');
     const music = document.getElementById('music');
     let isPlaying = false;
-    playBtn.addEventListener('click', function () {
+
+    function startPlaying() {
+      music
+        .play()
+        .then(() => {
+          playIcon.textContent = '❚❚';
+          isPlaying = true;
+        })
+        .catch(() => {});
+    }
+
+    // Пытаемся включить музыку сразу; если браузер блокирует автоплей,
+    // включаем при первом же клике/тапе пользователя по странице.
+    startPlaying();
+    document.addEventListener(
+      'click',
+      function () {
+        if (!isPlaying) startPlaying();
+      },
+      { once: true }
+    );
+
+    playBtn.addEventListener('click', function (e) {
+      e.stopPropagation();
       if (!isPlaying) {
-        music
-                .play()
-                .then(() => {
-                  playIcon.textContent = '❚❚';
-                  isPlaying = true;
-                })
-                .catch((e) => {
-                  alert('Браузер заблокировал автоматическое воспроизведение. Нажмите ещё раз!');
-                });
+        startPlaying();
       } else {
         music.pause();
         playIcon.textContent = '▶';
