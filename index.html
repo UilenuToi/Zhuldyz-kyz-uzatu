@@ -82,7 +82,7 @@
       background: url('Kuz-Uzatu-2.JPG') bottom center/contain no-repeat;
       background-position: calc(50%) calc(100% - 10px);
       max-width: 650px;
-      margin: -70px auto 0 auto;
+      margin: -280px auto 0 auto;
       border-radius: 16px;
       box-shadow: 0 2px 16px rgba(0,0,0,0.07);
       padding: 24px 32px 62px 32px;
@@ -453,15 +453,18 @@
     }
 
     // Пытаемся включить музыку сразу; если браузер блокирует автоплей,
-    // включаем при первом же клике/тапе пользователя по странице.
+    // включаем при первом же клике/тапе/скролле пользователя по странице
+    // (для Safari, который особенно строго блокирует автоплей со звуком).
     startPlaying();
-    document.addEventListener(
-      'click',
-      function () {
-        if (!isPlaying) startPlaying();
-      },
-      { once: true }
-    );
+    ['click', 'touchstart', 'scroll', 'wheel'].forEach(function (eventName) {
+      document.addEventListener(
+        eventName,
+        function () {
+          if (!isPlaying) startPlaying();
+        },
+        { once: true, passive: true }
+      );
+    });
 
     playBtn.addEventListener('click', function (e) {
       e.stopPropagation();
