@@ -468,6 +468,19 @@
   document.addEventListener('DOMContentLoaded', function () {
     const TELEGRAM_BOT_TOKEN = '8417785616:AAHr6ZHXpaWG-Gjscf2c4fuHn4-ktOU9WoA';
     const TELEGRAM_CHAT_ID = '-1004376789629';
+    const COUNTER_NAMESPACE = 'zhuldyz-kyz-uzatu-2026';
+    const ATTENDING_ANSWERS = ['Келемін', 'Жұбыммен келемін'];
+
+    async function bumpCounter(key) {
+      try {
+        const res = await fetch('https://api.countapi.xyz/hit/' + COUNTER_NAMESPACE + '/' + key);
+        if (!res.ok) return null;
+        const data = await res.json();
+        return data.value;
+      } catch (err) {
+        return null;
+      }
+    }
 
     const form = document.getElementById('rsvp-form');
     const submitBtn = form.querySelector('button[type="submit"]');
@@ -486,7 +499,16 @@
       submitBtn.disabled = true;
       submitBtn.textContent = 'Жіберілуде...';
 
-      const text = '🎉 Жаңа RSVP жауабы\n\nЕсім: ' + name + '\nЖауап: ' + answer;
+      const totalCount = await bumpCounter('total');
+      const comingCount = ATTENDING_ANSWERS.includes(answer) ? await bumpCounter('coming') : null;
+
+      let text = 'Есім: ' + name + '\nЖауап: ' + answer;
+      if (totalCount !== null) {
+        text += '\n\nБарлық жауап бергендер: ' + totalCount;
+      }
+      if (comingCount !== null) {
+        text += '\nКелетіндер саны: ' + comingCount;
+      }
 
       try {
         const response = await fetch(
