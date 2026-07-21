@@ -135,6 +135,19 @@
       font-size: 2.0em; /* можно подправить под нужный размер */
       margin: 18px 0 7px 0;
     }
+    .host-names {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .noto-italic.host-name {
+      font-family: 'Playfair Display', serif !important;
+      font-weight: 700 !important;
+      color: #765b50 !important;
+      opacity: 1;
+      margin: 0;
+      text-shadow: 0 0.5px 0 rgba(76, 50, 40, 0.2);
+    }
 
 
     /* Мини-календарь */
@@ -333,8 +346,10 @@
       қадірлі қонағы болуға шақырамыз!
     </div>
     <div class="outlined-text section">Той иелері:</div>
-    <div class="noto-italic" style="font-size: 1.15em">Қалымжан - Құрман</div>
-    <div class="noto-italic" style="font-size: 1.15em">Ерхан - Алена</div>
+    <div class="host-names">
+      <div class="noto-italic host-name" style="font-size: 1.15em">Қалымжан - (Құрман) </div>
+      <div class="noto-italic host-name" style="font-size: 1.15em">Ерхан - Алёна</div>
+    </div>
     <div class="outlined-text section">Той салтанаты:</div>
     <div class="noto-italic date">11 қыркүйек 2026ж</div>
     <div class="mini-calendar-container">
